@@ -7,11 +7,11 @@ const SITE_URL = "https://www.brightlightimmigration.ca";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Brightlight Immigration | Expert Canadian Immigration Consultants",
+    default: "Top Immigration Consultant in Canada – Bright Light",
     template: "%s | Brightlight Immigration",
   },
   description:
-    "Brightlight Immigration — trusted RCIC-licensed Canadian immigration consultants in Surrey, BC. Expert help with Express Entry, BCPNP, study visas, work permits, spousal sponsorship, and refusal cases. License #R522969.",
+    "Looking for the top immigration consultant in Canada? Bright Light Immigration offers expert guidance for study, work, and PR visas. Trusted support every step.",
   keywords: [
     "Canadian immigration consultant",
     "immigration consultant Surrey BC",

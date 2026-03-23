@@ -33,14 +33,14 @@ export const seoRegistry: Record<
       "Need help with the Agriculture Stream LMIA? Connect with the best immigration consultant in Canada for reliable, step-by-step guidance on your work permit.",
   },
   "bc-pnp": {
+    title: "Best Immigration Consultant Canada – Bright Light Help",
+    description:
+      "Need trusted guidance for Canada PR or BC PNP? Bright Light Immigration is the best immigration consultant in Canada, offering expert, personalized support.",
+  },
+  "bcpnp-calculator": {
     title: "Trusted Immigration Consultant for Canada – Bright Light",
     description:
       "Need guidance for Canadian immigration? Bright Light offers expert advice and a free BC PNP points calculator to help you plan your move to Canada with confidence.",
-  },
-  "bcpnp-calculator": {
-    title: "Brightlight Immigration | BCPNP Calculator 2025",
-    description:
-      "Calculate your BCPNP points with Brightlight Immigration's 2025 calculator. Assess points based on job offers, work experience, language skills, and education.",
   },
   "blogs": {
     title: "Top Immigration Agencies in Canada | Bright Light Blog",
@@ -77,7 +77,7 @@ export const seoRegistry: Record<
   "cby": {
     title: "Trusted Immigration Consultant for Canada | Bright Light",
     description:
-      "Looking for a reliable immigration consultant for Canada? Bright Light Immigration offers expert guidance for a smooth and successful Canadian immigration process",
+      "Looking for a reliable immigration consultant for Canada? Bright Light Immigration offers expert guidance for a smooth and successful Canadian immigration process.",
   },
   "change-college-program": {
     title: "Top Immigration Agencies in Canada | Bright Light Help",
@@ -115,10 +115,9 @@ export const seoRegistry: Record<
       "Get expert guidance from Bright Light, your reliable immigration consultant for Canada. Contact us today for personalized visa support and smooth application process.",
   },
   "dependent-children": {
-    title:
-      "Open Work Permits for Dependent Children | Brightlight Immigration",
+    title: "Best Immigration Consultant Canada | Bright Light Help",
     description:
-      "Help your dependent children of TFWs work in Canada without LMIA or job offers. Explore the new IRCC policies and apply under LMIA exemption codes C46 & C48.",
+      "Looking to reunite with your dependent children in Canada? Trust Bright Light, the best immigration consultant in Canada, for expert guidance and support.",
   },
   "dual-intent-visa": {
     title: "Best Immigration Consultant Canada | Dual Intent Visa Help",

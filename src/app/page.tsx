@@ -279,17 +279,17 @@ export default function HomePage() {
           SECTION 2 — Loveneet / Consultant Banner (full-width image overlay)
       =================================================================== */}
       <section className="relative w-full overflow-hidden">
-        {/* Full-width background image */}
-        <div className="relative w-full min-h-[1040px] max-[1100px]:min-h-[800px] max-[900px]:min-h-[600px] max-[580px]:min-h-[450px]">
+        {/* Full-width background image — on mobile, image flows naturally for proper aspect ratio */}
+        <div className="relative w-full">
           {loveneetSection.bgImage ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={loveneetSection.bgImage}
               alt={loveneetSection.bgAlt}
-              className="w-full h-full absolute inset-0 object-cover"
+              className="w-full h-auto block"
             />
           ) : (
-            <div className="absolute inset-0 bg-primary" />
+            <div className="w-full h-[600px] bg-primary" />
           )}
 
           {/* "DECADE LONG EXPERIENCE" watermark text — hidden on small mobile */}
@@ -305,28 +305,28 @@ export default function HomePage() {
           </div>
 
           {/* Overlay buttons at bottom */}
-          <div className="absolute bottom-[90px] max-[900px]:bottom-[50px] max-[580px]:bottom-[20px] left-0 w-full px-[150px] max-[1200px]:px-[80px] max-[900px]:px-[40px] max-[580px]:px-[15px]">
-            <div className="max-w-[1440px] mx-auto flex items-center gap-4 max-[580px]:gap-3 flex-wrap">
+          <div className="absolute bottom-[90px] max-[900px]:bottom-[40px] max-[580px]:bottom-[15px] left-0 w-full px-[150px] max-[1200px]:px-[80px] max-[900px]:px-[40px] max-[580px]:px-[10px]">
+            <div className="max-w-[1440px] mx-auto flex items-center gap-4 max-[580px]:gap-2 flex-wrap">
               {/* LinkedIn button */}
               <Link
                 href={loveneetSection.linkedinLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-2.5 max-[580px]:px-4 max-[580px]:py-2 rounded-full text-[18px] max-[580px]:text-[13px] font-semibold no-underline transition-all duration-300 hover:bg-primary-light animate-[pulse_2s_infinite]"
+                className="inline-flex items-center gap-2 bg-transparent border-2 max-[580px]:border border-white text-white px-6 py-2.5 max-[580px]:px-3 max-[580px]:py-1.5 rounded-full text-[18px] max-[580px]:text-[11px] font-semibold no-underline transition-all duration-300 hover:bg-primary-light animate-[pulse_2s_infinite]"
               >
-                <FaLinkedin className="text-[20px] max-[580px]:text-[14px]" />
+                <FaLinkedin className="text-[20px] max-[580px]:text-[12px]" />
                 LinkedIn
               </Link>
 
               {/* RCIC Appointment button */}
               <Link
                 href={loveneetSection.rcicAppointmentUrl}
-                className="inline-flex flex-col items-center bg-transparent border-2 border-white text-white px-6 py-2.5 max-[580px]:px-4 max-[580px]:py-2 rounded-full no-underline transition-all duration-300 hover:bg-primary-light"
+                className="inline-flex flex-col items-center bg-transparent border-2 max-[580px]:border border-white text-white px-6 py-2.5 max-[580px]:px-3 max-[580px]:py-1 rounded-full no-underline transition-all duration-300 hover:bg-primary-light"
               >
-                <span className="text-[10px] max-[580px]:text-[8px] font-light">Have Questions?</span>
-                <span className="text-[14px] max-[580px]:text-[11px] font-bold">
+                <span className="text-[10px] max-[580px]:text-[7px] font-light">Have Questions?</span>
+                <span className="text-[14px] max-[580px]:text-[9px] font-bold">
                   <span className="font-bold">RCIC</span>{" "}
-                  <span className="text-[10px] max-[580px]:text-[8px]">APPOINTMENT</span>
+                  <span className="text-[10px] max-[580px]:text-[7px]">APPOINTMENT</span>
                 </span>
               </Link>
             </div>
@@ -339,17 +339,17 @@ export default function HomePage() {
       =================================================================== */}
       <section className="w-full bg-primary py-[50px] -mt-[5px]">
         <div className="max-w-[1420px] mx-auto max-[1460px]:w-[95%]">
-          <FadeIn className="flex items-start justify-center gap-[100px] max-[1100px]:gap-[50px] max-[790px]:gap-[30px] max-[580px]:flex-col max-[580px]:items-center">
+          <FadeIn className="flex items-start justify-center gap-[100px] max-[1100px]:gap-[50px] max-[790px]:gap-[30px] max-[580px]:gap-[15px]">
             {memberCards.map((card, i) => (
               <FadeIn
                 key={i}
                 delay={i * 0.3}
                 className="flex flex-col items-center text-white text-center"
               >
-                <h3 className="text-[20px] font-bold pb-[20px]">
+                <h3 className="text-[20px] max-[580px]:text-[12px] font-bold pb-[20px] max-[580px]:pb-[10px]">
                   {card.heading}
                 </h3>
-                <div className="w-[350px] h-[180px] max-[1100px]:w-[280px] max-[1100px]:h-[150px] max-[790px]:w-[220px] max-[790px]:h-[130px] max-[580px]:w-[280px] max-[580px]:h-[140px] bg-white rounded-[15px] flex items-center justify-center p-4">
+                <div className="w-[350px] h-[180px] max-[1100px]:w-[280px] max-[1100px]:h-[150px] max-[790px]:w-[220px] max-[790px]:h-[130px] max-[580px]:w-[110px] max-[580px]:h-[90px] max-[415px]:w-[95px] max-[415px]:h-[80px] bg-white rounded-[15px] max-[580px]:rounded-[10px] flex items-center justify-center p-4 max-[580px]:p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={card.img}
