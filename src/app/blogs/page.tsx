@@ -81,15 +81,15 @@ export default function BlogsPage() {
     <div className="min-h-screen bg-[#f5f7fa]">
 
       {/* ── Top banner ── */}
-      <div className="bg-primary pt-[200px] max-[1000px]:pt-[160px] pb-16 px-6">
+      <div className="bg-primary pt-[200px] max-[1000px]:pt-[200px] max-[580px]:pt-[190px] pb-16 max-[580px]:pb-10 px-6 max-[580px]:px-4">
         <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto">
           <p className="text-gold text-[13px] font-semibold uppercase tracking-widest mb-3">
             Brightlight Blog
           </p>
-          <h1 className="text-white text-[52px] max-[800px]:text-[36px] font-bold leading-tight mb-4">
+          <h1 className="text-white text-[52px] max-[800px]:text-[36px] max-[480px]:text-[28px] font-bold leading-tight mb-4">
             Immigration Insights &amp; Updates
           </h1>
-          <p className="text-white/60 text-[17px] max-w-[560px]">
+          <p className="text-white/60 text-[17px] max-[580px]:text-[15px] max-w-[560px]">
             Your go-to source for easy-to-understand Canadian immigration news,
             tips, and policy updates.
           </p>
@@ -98,7 +98,7 @@ export default function BlogsPage() {
 
       {/* ── Featured latest blog ── */}
       {featured && !loading && (
-        <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 -mt-8">
+        <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 max-[580px]:px-3 -mt-8 max-[580px]:-mt-5">
           <Link
             href={`/blogs/${featured.custom_url || makeSlug(featured.blog_heading)}`}
             className="no-underline group block"
@@ -114,7 +114,7 @@ export default function BlogsPage() {
                   />
                 </div>
               )}
-              <div className="md:w-[45%] p-8 md:p-12 flex flex-col justify-center">
+              <div className="md:w-[45%] p-6 max-[580px]:p-5 md:p-12 flex flex-col justify-center">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-gold mb-4 block">
                   Featured Post
                 </span>
@@ -148,7 +148,7 @@ export default function BlogsPage() {
       )}
 
       {/* ── Search + sort bar ── */}
-      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 mt-10">
+      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 max-[580px]:px-3 mt-10 max-[580px]:mt-6">
         <div className="bg-white rounded-xl shadow-[0_2px_12px_rgba(19,47,70,0.07)] px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-1 max-w-[420px]">
             <div className="relative flex-1">
@@ -196,7 +196,7 @@ export default function BlogsPage() {
       </div>
 
       {/* ── Main content + sidebar ── */}
-      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 py-10 flex gap-8 items-start flex-col lg:flex-row">
+      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 max-[580px]:px-3 py-10 max-[580px]:py-6 flex gap-8 max-[580px]:gap-5 items-start flex-col lg:flex-row">
 
         {/* Blog grid */}
         <div className="flex-1 min-w-0">

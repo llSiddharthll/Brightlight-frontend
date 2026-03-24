@@ -88,11 +88,11 @@ export default async function BlogPostPage({
     <div className="min-h-screen bg-[#f5f7fa]">
 
       {/* ── Title banner ── */}
-      <div className="bg-primary pt-[200px] max-[1000px]:pt-[160px] pb-12 px-6">
+      <div className="bg-primary pt-[200px] max-[1000px]:pt-[200px] max-[580px]:pt-[190px] pb-12 max-[580px]:pb-8 px-6 max-[580px]:px-4">
         <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto">
           <Link
             href="/blogs"
-            className="inline-flex items-center gap-1.5 text-white/50 hover:text-white text-[13px] no-underline mb-6 transition-colors duration-200"
+            className="hidden md:inline-flex items-center gap-1.5 text-white/50 hover:text-white text-[13px] no-underline mb-6 transition-colors duration-200"
           >
             ← Back to Blogs
           </Link>
@@ -108,11 +108,11 @@ export default async function BlogPostPage({
               ))}
             </div>
           )}
-          <h1 className="text-white text-[40px] max-[700px]:text-[26px] font-bold leading-tight max-w-[860px]">
+          <h1 className="text-white text-[40px] max-[700px]:text-[28px] max-[480px]:text-[24px] font-bold leading-tight max-w-[860px]">
             {blog.blog_heading}
           </h1>
           {dateStr && (
-            <p className="text-white/50 text-[14px] mt-4">
+            <p className="text-white/50 text-[14px] mt-4 max-[580px]:mt-3">
               Published {dateStr}
             </p>
           )}
@@ -120,14 +120,14 @@ export default async function BlogPostPage({
       </div>
 
       {/* ── Two-column layout ── */}
-      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 py-10 flex gap-8 items-start flex-col lg:flex-row">
+      <div className="max-w-[1440px] max-[1460px]:max-w-[95%] mx-auto px-6 max-[580px]:px-3 py-10 max-[580px]:py-6 flex gap-8 max-[580px]:gap-5 items-start flex-col lg:flex-row">
 
         {/* ── Main content ── */}
-        <article className="flex-1 min-w-0">
+        <article className="flex-1 min-w-0 w-full">
 
           {/* Featured image */}
           {blog.image && (
-            <div className="rounded-2xl overflow-hidden mb-8 shadow-[0_4px_24px_rgba(19,47,70,0.10)]">
+            <div className="rounded-2xl max-[580px]:rounded-xl overflow-hidden mb-8 max-[580px]:mb-5 shadow-[0_4px_24px_rgba(19,47,70,0.10)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={blog.image}
@@ -138,7 +138,7 @@ export default async function BlogPostPage({
           )}
 
           {/* Content */}
-          <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(19,47,70,0.07)] px-8 max-[600px]:px-5 py-10">
+          <div className="bg-white rounded-2xl max-[580px]:rounded-xl shadow-[0_4px_20px_rgba(19,47,70,0.07)] px-8 max-[580px]:px-4 py-10 max-[580px]:py-6">
             <div
               className="
                 prose prose-lg max-w-none
@@ -166,8 +166,8 @@ export default async function BlogPostPage({
             />
           </div>
 
-          {/* Back link */}
-          <div className="mt-8">
+          {/* Back link — hidden on mobile */}
+          <div className="mt-8 hidden md:block">
             <Link
               href="/blogs"
               className="inline-flex items-center gap-2 text-primary/50 hover:text-primary text-[14px] no-underline transition-colors duration-200"
