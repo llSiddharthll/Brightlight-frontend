@@ -39,9 +39,11 @@ async function getBlog(slug: string): Promise<Blog | null> {
 
 async function getAllBlogs(): Promise<Blog[]> {
   try {
+    // Note: The backend now excludes blog_content by default for the list view to reduce payload size.
     const res = await fetch(`${API}/api/blogs`, { cache: "no-store" });
     if (!res.ok) return [];
-    return res.json();
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import Loader from "@/components/ui/loader";
 
 function makeSlug(heading: string) {
   return heading
@@ -41,21 +42,33 @@ export default function BlogsPage() {
   useEffect(() => {
     fetch(`${API}/api/blogs`)
       .then((r) => r.json())
-      .then(setBlogs)
-      .catch(() => {})
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setBlogs(data);
+        } else {
+          console.error("Blogs data is not an array:", data);
+          setBlogs([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch blogs:", err);
+        setBlogs([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  const featured = blogs[0] ?? null;
+  const featured = Array.isArray(blogs) ? blogs[0] ?? null : null;
 
   const filtered = useMemo(() => {
-    let list = [...blogs];
+    let list = Array.isArray(blogs) ? [...blogs] : [];
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(
         (b) =>
           b.blog_heading.toLowerCase().includes(q) ||
-          stripHtml(b.blog_content).toLowerCase().includes(q)
+          (b.tag_1 || "").toLowerCase().includes(q) ||
+          (b.tag_2 || "").toLowerCase().includes(q) ||
+          (b.tag_3 || "").toLowerCase().includes(q)
       );
     }
     if (sort === "oldest") list.reverse();
@@ -126,9 +139,11 @@ export default function BlogsPage() {
                 <h2 className="text-primary text-[26px] max-[600px]:text-[20px] font-bold leading-snug mb-4 group-hover:text-gold transition-colors duration-200">
                   {featured.blog_heading}
                 </h2>
-                <p className="text-[#4a4a4a] text-[15px] leading-relaxed mb-6 line-clamp-3">
-                  {stripHtml(featured.blog_content).slice(0, 200)}…
-                </p>
+                {featured.blog_content && (
+                  <p className="text-[#4a4a4a] text-[15px] leading-relaxed mb-6 line-clamp-3">
+                    {stripHtml(featured.blog_content).slice(0, 200)}…
+                  </p>
+                )}
                 {featured.date && (
                   <p className="text-[12px] text-primary/40 mb-6">
                     {new Date(featured.date).toLocaleDateString("en-CA", {
@@ -201,11 +216,7 @@ export default function BlogsPage() {
         {/* Blog grid */}
         <div className="flex-1 min-w-0">
           {loading ? (
-            <div className="grid grid-cols-2 max-[700px]:grid-cols-1 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl h-[340px] animate-pulse" />
-              ))}
-            </div>
+            <Loader />
           ) : paginated.length === 0 ? (
             <div className="text-center py-20 text-primary/40 text-[16px]">
               {search ? `No blogs found for "${search}"` : "No blogs published yet."}
@@ -215,7 +226,7 @@ export default function BlogsPage() {
               {paginated.map((blog) => {
                 const slug = blog.custom_url || makeSlug(blog.blog_heading);
                 const tags = [blog.tag_1, blog.tag_2, blog.tag_3].filter(Boolean);
-                const excerpt = stripHtml(blog.blog_content).slice(0, 120);
+                const excerpt = blog.blog_content ? stripHtml(blog.blog_content).slice(0, 120) : "";
                 const dateStr = blog.date
                   ? new Date(blog.date).toLocaleDateString("en-CA", {
                       year: "numeric",
