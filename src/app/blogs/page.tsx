@@ -40,7 +40,7 @@ export default function BlogsPage() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    fetch(`${API}/api/blogs`)
+    fetch(`${API}/api/blogs?images=true`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) {

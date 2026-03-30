@@ -225,7 +225,6 @@ export default async function BlogPostPage({
                     >
                       {b.image && (
                         <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={b.image}
                             alt={b.blog_heading}
