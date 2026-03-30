@@ -223,23 +223,14 @@ export default function HomePage() {
             <h1 className="hero-slide-left text-[55px] max-[1100px]:text-[46px] max-[790px]:text-[38px] max-[580px]:text-[28px] max-[415px]:text-[24px] font-normal leading-[1.15] text-[#727376]">
               {headline1.rest}{" "}
               <span className="text-primary-light">{headline1.last}</span>
-              <br />
-              <span className="hero-slide-right inline-block mt-2">
-                {headline2.rest}{" "}
-                <span className="text-primary-light">{headline2.last}</span>
-              </span>
             </h1>
-            <p className="hero-fade-up mt-5 text-[18px] max-[580px]:text-[14px] font-bold text-primary">
+            <h1 className="hero-slide-right text-[55px] max-[1100px]:text-[46px] max-[790px]:text-[38px] max-[580px]:text-[28px] max-[415px]:text-[24px] font-normal leading-[1.15] text-[#727376] mt-2">
+              {headline2.rest}{" "}
+              <span className="text-primary-light">{headline2.last}</span>
+            </h1>
+            <h2 className="hero-fade-up mt-5 text-[18px] max-[580px]:text-[14px] font-bold text-primary">
               {homeTopSection.smallHeadline1}
-            </p>
-            <div className="hero-btn mt-6">
-              <a
-                href="/booking"
-                className="inline-block font-heading bg-primary text-white rounded-[30px] px-[40px] py-[16px] max-[580px]:px-[30px] max-[580px]:py-[12px] text-[18px] max-[580px]:text-[15px] font-semibold no-underline cursor-pointer transition-all duration-300 hover:bg-primary-light hover:shadow-[0_8px_25px_rgba(19,47,70,0.4)] animate-[pulse_2s_infinite]"
-              >
-                Book Free Assessment
-              </a>
-            </div>
+            </h2>
           </div>
 
           {/* Service icon cards — horizontal bar with dividers */}
