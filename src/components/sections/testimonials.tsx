@@ -303,7 +303,7 @@ export default function Testimonials({ variant = "blue" }: TestimonialsProps) {
             effect="coverflow"
             grabCursor={true}
             centeredSlides={true}
-            loop={false}
+            loop={true}
             slidesPerView="auto"
             coverflowEffect={{
               rotate: 0,
@@ -311,11 +311,11 @@ export default function Testimonials({ variant = "blue" }: TestimonialsProps) {
               depth: 100,
               modifier: 2.5,
             }}
-            pagination={{ el: ".swiper_pagination_2", clickable: true }}
-            modules={[EffectCoverflow, Pagination, Navigation]}
+            className="w-full pb-[70px]"
+            modules={[EffectCoverflow]}
           >
-            {VIDEOS.map((video) => (
-              <SwiperSlide key={video.id}>
+            {[...VIDEOS, ...VIDEOS, ...VIDEOS].map((video, index) => (
+              <SwiperSlide key={`${video.id}-${index}`} className="testimonial-video-slide">
                 <YouTubeFacade id={video.id} title={video.name} isWhite={isWhite} />
                 <p
                   className={`text-center text-[25px] w-[80%] mx-auto mt-5 font-light max-[980px]:text-xl max-[500px]:text-lg ${

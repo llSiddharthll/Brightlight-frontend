@@ -120,9 +120,6 @@ function FadeIn({
   );
 }
 
-// =============================================================================
-// Services Swiper with custom nav arrows (matches old frontend)
-// =============================================================================
 function ServicesSwiperSection() {
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -132,20 +129,19 @@ function ServicesSwiperSection() {
         ref={swiperRef}
         effect="coverflow"
         grabCursor={true}
+        slidesPerView="auto"
         centeredSlides={true}
         loop={true}
-        slidesPerView="auto"
         coverflowEffect={{
           rotate: 0,
           stretch: 0,
           depth: 100,
           modifier: 2.5,
         }}
-        pagination={{ el: ".swiper_pagination", clickable: true }}
-        modules={[EffectCoverflow, Pagination]}
-        className="!pb-[70px]"
+        modules={[EffectCoverflow]}
+        className="!pb-[20px] w-full"
       >
-        {serviceCards.map((card, index) => (
+        {[...serviceCards, ...serviceCards, ...serviceCards].map((card, index) => (
           <SwiperSlide
             key={index}
             className="!h-auto services-slide"
@@ -169,7 +165,6 @@ function ServicesSwiperSection() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className="swiper_pagination" />
 
       {/* Custom prev/next arrows below dots */}
       <div className="flex justify-center mt-5 gap-3">

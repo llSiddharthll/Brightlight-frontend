@@ -160,7 +160,7 @@
 
 /* ===== Swiper Overrides ===== */
 .swiper-slide {
-  flex-shrink: 1 !important;
+  flex-shrink: 0 !important;
 }
 
 .swiper_pagination {
@@ -308,14 +308,39 @@
   margin: 12px 0;
 }
 
-/* Services Swiper slide sizing — desktop 300px, mobile 85vw */
+/* Services Swiper slide sizing */
 .swiper-slide.services-slide {
-  width: 300px !important;
+  width: 320px !important;
   flex-shrink: 0 !important;
 }
+
+/* Testimonial Swiper slide sizing */
+.testimonial-video-slide {
+  width: 500px !important;
+  flex-shrink: 0 !important;
+}
+
+@media (max-width: 680px) {
+  .testimonial-video-slide {
+    width: 350px !important;
+  }
+}
+
+@media (max-width: 415px) {
+  .testimonial-video-slide {
+    width: 300px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .swiper-slide.services-slide {
+    width: 280px !important;
+  }
+}
+
 @media (max-width: 580px) {
   .swiper-slide.services-slide {
-    width: 85vw !important;
+    width: 260px !important;
   }
 }
 
