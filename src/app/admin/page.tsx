@@ -66,76 +66,78 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary relative overflow-hidden font-sans">
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-gold/10 rounded-full blur-[140px] animate-pulse" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary-light/20 rounded-full blur-[140px]" />
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0f18] relative overflow-hidden font-sans">
+      {/* Mesh Gradient Background */}
+      <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-gold/5 rounded-full blur-[150px] animate-pulse" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary/20 rounded-full blur-[150px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_transparent_0%,_#0a0f18_100%)] z-1" />
       
       <motion.div 
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-[520px] px-6 relative z-10"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-[400px] px-4 relative z-10"
       >
-        <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[48px] p-16 shadow-[0_20px_80px_rgba(0,0,0,0.4)]">
-          <div className="text-center mb-12">
+        <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.01] backdrop-blur-xl border border-white/[0.05] rounded-[32px] p-8 shadow-[0_32px_128px_rgba(0,0,0,0.8)] ring-1 ring-white/10">
+          <div className="text-center mb-8">
             <motion.div 
-              whileHover={{ rotate: 15, scale: 1.1 }}
-              className="w-24 h-24 bg-gold rounded-[32px] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-gold/20 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-14 h-14 bg-gradient-to-tr from-gold to-[#fcebb6] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-[0_0_30px_rgba(232,196,124,0.15)]"
             >
-               <HiOutlineShieldCheck size={48} className="text-primary" />
+               <HiOutlineShieldCheck size={28} className="text-primary" />
             </motion.div>
-            <h1 className="text-[32px] font-black text-white tracking-tighter uppercase mb-2">Admin Terminal</h1>
-            <p className="text-[12px] text-white/30 font-black tracking-[0.4em] uppercase">
-              Brightlight Immigration hub
+            <h1 className="text-[22px] font-bold text-white tracking-tight mb-1">Admin Terminal</h1>
+            <p className="text-[9px] text-white/40 font-medium tracking-[0.2em] uppercase">
+              Secure authentication
             </p>
           </div>
 
           {setupDone && (
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-500/10 border border-green-500/20 rounded-2xl px-6 py-4 text-[14px] text-green-400 mb-10 font-bold text-center flex items-center justify-center gap-3"
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-2.5 text-[11px] text-emerald-400 mb-5 font-medium text-center flex items-center justify-center gap-2"
             >
-              <HiOutlineSparkles /> Central Archive Initialized. Log in.
+              <HiOutlineSparkles size={14} /> Setup Complete. Access Enabled.
             </motion.div>
           )}
 
           <form
             onSubmit={showSetup ? handleSetup : handleLogin}
-            className="space-y-8"
+            className="space-y-5"
           >
-            <div className="space-y-6">
-              <div className="relative group">
-                <label className="block text-[11px] font-black text-white/50 uppercase tracking-[0.3em] mb-4 ml-2">
+            <div className="space-y-3.5">
+              <div className="relative">
+                <label className="block text-[9px] font-bold text-white/30 uppercase tracking-[0.15em] mb-2 ml-1">
                   Security Alias
                 </label>
-                <div className="relative">
-                   <HiOutlineUser className="absolute left-6 top-1/2 -translate-y-1/2 text-white/50 group-focus-within:text-gold transition-colors" size={20} />
+                <div className="relative group">
+                   <HiOutlineUser className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-gold transition-colors" size={16} />
                    <input
                      type="text"
                      value={username}
                      onChange={(e) => setUsername(e.target.value)}
                      required
-                     className="w-full bg-white/[0.05] border border-white/10 rounded-[22px] pl-16 pr-8 py-5 text-[16px] text-white focus:bg-white/10 focus:border-gold outline-none transition-all placeholder:text-white/10"
-                     placeholder="OPERATOR_ID"
+                     className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-5 py-3.5 text-[14px] text-white focus:bg-white/[0.06] focus:border-gold/30 outline-none transition-all placeholder:text-white/20"
+                     placeholder="Enter username"
                    />
                 </div>
               </div>
 
-              <div className="relative group">
-                <label className="block text-[11px] font-black text-white/50 uppercase tracking-[0.3em] mb-4 ml-2">
+              <div className="relative">
+                <label className="block text-[9px] font-bold text-white/30 uppercase tracking-[0.15em] mb-2 ml-1">
                   Access Key
                 </label>
-                <div className="relative">
-                   <HiOutlineLockClosed className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-gold transition-colors" size={20} />
+                <div className="relative group">
+                   <HiOutlineLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-gold transition-colors" size={16} />
                    <input
                      type="password"
                      value={password}
                      onChange={(e) => setPassword(e.target.value)}
                      required
-                     className="w-full bg-white/[0.05] border border-white/10 rounded-[22px] pl-16 pr-8 py-5 text-[16px] text-white focus:bg-white/10 focus:border-gold outline-none transition-all placeholder:text-white/10"
-                     placeholder="••••••••"
+                     className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl pl-11 pr-5 py-3.5 text-[14px] text-white focus:bg-white/[0.06] focus:border-gold/30 outline-none transition-all placeholder:text-white/20"
+                     placeholder="Enter password"
                    />
                 </div>
               </div>
@@ -143,18 +145,18 @@ export default function AdminLoginPage() {
 
             {error && (
               <motion.div 
-                initial={{ x: -10 }}
-                animate={{ x: 0 }}
-                className="bg-red-500/10 border border-red-500/20 rounded-2xl px-6 py-4 text-[13px] text-red-400 font-bold flex items-center gap-3"
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-rose-500/10 border border-rose-500/20 rounded-lg px-4 py-2.5 text-[11px] text-rose-400 font-medium flex items-center gap-2"
               >
-                <span className="text-[18px]">⚠️</span> {error}
+                <span>⚠️</span> {error}
               </motion.div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold text-primary p-6 rounded-[24px] text-[16px] font-black uppercase tracking-[0.2em] hover:shadow-[0_10px_40px_rgba(232,196,124,0.3)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 transition-all cursor-pointer mt-6"
+              className="w-full bg-gold text-[#0a0f18] py-3.5 rounded-xl text-[13px] font-bold uppercase tracking-[0.1em] hover:brightness-110 active:scale-[0.98] disabled:opacity-30 transition-all cursor-pointer shadow-lg shadow-gold/5"
             >
               {loading
                 ? "Authorizing..."
@@ -164,24 +166,19 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-6 pt-5 border-t border-white/[0.04]">
              <button
                 onClick={() => {
                   setShowSetup(!showSetup);
                   setError("");
                 }}
-                className="text-[11px] font-black text-white/20 hover:text-gold uppercase tracking-[0.4em] transition-colors cursor-pointer"
+                className="text-[9px] font-bold text-white/20 hover:text-gold uppercase tracking-[0.2em] transition-colors cursor-pointer"
               >
-                {showSetup ? "← Standard Login" : "Terminal Initialization"}
+                {showSetup ? "← Return to Login" : "Initialize New Terminal"}
               </button>
           </div>
         </div>
       </motion.div>
-
-      {/* Footer Branding */}
-      <div className="absolute bottom-12 inset-x-0 text-center">
-         <p className="text-[10px] font-black text-white/5 uppercase tracking-[0.8em]">Secure Protocol v2.5.0</p>
-      </div>
     </div>
   );
 }
