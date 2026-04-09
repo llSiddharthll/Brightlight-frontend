@@ -1,14 +1,26 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Admin | Brightlight Immigration",
-  robots: { index: false, follow: false },
-};
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import { usePathname } from "next/navigation";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="min-h-screen bg-[#f0f4f8]">{children}</div>;
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/admin";
+
+  if (isLoginPage) {
+    return <div className="min-h-screen">{children}</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f8fafc] flex">
+      <AdminSidebar />
+      <div className="flex-1 ml-[280px]">
+        {children}
+      </div>
+    </div>
+  );
 }

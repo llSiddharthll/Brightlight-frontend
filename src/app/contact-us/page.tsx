@@ -49,15 +49,18 @@ export default function ContactUsPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/send-email`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/email`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            from: formData.email,
-            to: "info@brightlightimmigration.ca",
-            subject: "Contact Form Submission",
-            text: `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nArea of Interest: ${formData.interest}\nMessage: ${formData.message}`,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            areaOfInterest: formData.interest,
+            residencyStatus: activeDiv === "insideCanada" ? "Inside Canada" : "Outside Canada",
+            subject: "New Contact Form Submission",
+            message: formData.message,
           }),
         }
       );

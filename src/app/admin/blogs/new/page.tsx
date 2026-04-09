@@ -5,6 +5,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
 import ContentEditor from "@/components/admin/ContentEditor";
+import { 
+  HiOutlineCloudUpload, 
+  HiOutlinePhotograph, 
+  HiOutlineExclamationCircle,
+  HiOutlineTrash,
+  HiOutlineArrowLeft,
+  HiOutlineSave
+} from "react-icons/hi";
 
 const API = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
@@ -97,220 +105,192 @@ export default function NewBlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f4f8]">
-      <AdminHeader title="New Blog Post" subtitle="Create a new immigration blog" />
+    <div className="flex flex-col min-h-screen bg-[#f8fafc]">
+      <AdminHeader title="Create New Blog" subtitle="Crafting a new story for Brightlight Immigration" />
 
-      <main className="max-w-[1200px] mx-auto px-6 py-10">
-        <div className="flex items-center gap-3 mb-6">
+      <main className="p-8 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 overflow-x-hidden">
+        <div className="flex items-center gap-4 mb-6">
           <Link
             href="/admin/blogs"
-            className="text-[13px] text-primary/50 hover:text-primary no-underline transition-colors duration-200"
+            className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-200 hover:border-gold transition-all no-underline text-primary"
           >
-            ← Back to Blogs
+            <HiOutlineArrowLeft />
           </Link>
+          <div className="h-4 w-px bg-slate-300 mx-2" />
+          <p className="text-[13px] font-bold text-slate-500 uppercase tracking-widest">Library / New Entry</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-10 items-start">
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-[14px] text-red-600">
+            <div className="col-span-12 bg-red-50 border border-red-100 rounded-2xl px-6 py-3 text-[14px] text-red-600 font-bold mb-6 flex items-center gap-3">
+              <HiOutlineExclamationCircle size={20} />
               {error}
             </div>
           )}
 
-          {/* Main fields */}
-          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(19,47,70,0.08)] space-y-5">
-            <h3 className="text-[16px] font-bold text-primary border-b border-primary/10 pb-3">
-              Post Details
-            </h3>
+          {/* Left Column: Editor & Details */}
+          <div className="col-span-8 space-y-6">
+            {/* Heading & Tags */}
+            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_40px_rgba(19,47,70,0.03)] border border-primary/10">
+              <div className="mb-8">
+                <label className="block text-[11px] font-black uppercase tracking-widest text-slate-600 mb-2.5">Blog Title <span className="text-red-400">*</span></label>
+                <input
+                  type="text"
+                  value={heading}
+                  onChange={(e) => setHeading(e.target.value)}
+                  required
+                  className="w-full bg-[#f8fafc] border border-primary/10 rounded-xl px-6 py-4 text-[16px] font-bold text-primary focus:bg-white focus:border-gold outline-none transition-all placeholder:text-slate-400"
+                  placeholder="The Ultimate Guide to Express Entry 2026..."
+                />
+              </div>
 
-            <div>
-              <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                Blog Heading <span className="text-red-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={heading}
-                onChange={(e) => setHeading(e.target.value)}
-                required
-                className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/60 transition-all"
-                placeholder="e.g. Express Entry Draw #278: 3,500 Invitations Issued"
-              />
+              <div className="grid grid-cols-3 gap-5">
+                {[
+                  { label: "Category 1", val: tag1, set: setTag1 },
+                  { label: "Category 2", val: tag2, set: setTag2 },
+                  { label: "Category 3", val: tag3, set: setTag3 },
+                ].map(({ label, val, set }) => (
+                  <div key={label}>
+                    <label className="block text-[10px] font-black uppercase tracking-widest text-slate-600 mb-2">{label}</label>
+                    <input
+                      type="text"
+                      value={val}
+                      onChange={(e) => set(e.target.value)}
+                      className="w-full bg-[#f8fafc] border border-primary/10 rounded-xl px-4 py-2.5 text-[14px] font-bold text-primary focus:bg-white focus:border-gold outline-none transition-all placeholder:text-slate-400"
+                      placeholder="e.g. Canada PR"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-4">
-              {[
-                { label: "Tag 1", val: tag1, set: setTag1 },
-                { label: "Tag 2", val: tag2, set: setTag2 },
-                { label: "Tag 3", val: tag3, set: setTag3 },
-              ].map(({ label, val, set }) => (
-                <div key={label}>
-                  <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                    {label}
-                  </label>
+            {/* Rich Content Editor */}
+            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_40px_rgba(19,47,70,0.03)] border border-primary/10">
+              <label className="block text-[11px] font-black uppercase tracking-widest text-slate-600 mb-4">Main Content Body <span className="text-red-400">*</span></label>
+              <ContentEditor
+                value={content}
+                onChange={setContent}
+                label=""
+              />
+            </div>
+          </div>
+
+          {/* Right Column: SEO & Settings */}
+          <div className="col-span-4 space-y-6">
+            {/* Publishing Settings */}
+            <div className="bg-primary rounded-[20px] p-6 text-white shadow-xl">
+              <h3 className="text-[16px] font-bold mb-5 flex items-center gap-2">
+                <HiOutlineCloudUpload size={20} />
+                Publish Settings
+              </h3>
+              
+              <div className="space-y-4 mb-6">
+                 <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-widest text-white/50 mb-1.5">URL Logic</label>
+                    <input
+                      type="text"
+                      value={customUrl}
+                      onChange={(e) => setCustomUrl(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-"))}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-[13px] font-bold text-gold focus:bg-white/10 focus:border-gold outline-none transition-all font-mono placeholder:text-white/20"
+                      placeholder="auto-generated..."
+                    />
+                 </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-gold text-primary font-black py-4 rounded-xl hover:shadow-xl hover:translate-y-[-2px] transition-all text-[13px] uppercase tracking-widest disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {submitting ? "Processing..." : (
+                  <>
+                    <HiOutlineCloudUpload size={18} />
+                    Publish Live
+                  </>
+                )}
+              </button>
+              <Link href="/admin/blogs" className="block text-center mt-4 text-[11px] text-white/40 hover:text-white transition-colors no-underline uppercase tracking-[0.2em] font-black">
+                Discard Draft
+              </Link>
+            </div>
+
+            {/* Image Manager */}
+            <div className="bg-white rounded-[20px] p-6 shadow-[0_4px_40px_rgba(19,47,70,0.03)] border border-primary/10">
+              <h3 className="text-[12px] font-black uppercase tracking-widest text-slate-700 mb-4 border-b border-primary/10 pb-3 flex items-center gap-2">
+                <HiOutlinePhotograph size={18} />
+                Featured Image
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="aspect-video bg-[#f8fafc] rounded-xl border-2 border-dashed border-primary/10 flex flex-col items-center justify-center p-4 relative overflow-hidden group">
+                   {imagePreview ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
+                   ) : (
+                      <div className="text-center flex flex-col items-center">
+                         <HiOutlinePhotograph size={28} className="text-slate-300 mb-2" />
+                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Upload Header Image</p>
+                      </div>
+                   )}
+                   <input
+                     ref={fileInputRef}
+                     type="file"
+                     accept="image/*"
+                     onChange={handleImageChange}
+                     className="absolute inset-0 opacity-0 cursor-pointer"
+                   />
+                </div>
+
+                <div>
+                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Accessibility (Alt)</label>
+                   <input
+                     type="text"
+                     value={altTag}
+                     onChange={(e) => setAltTag(e.target.value)}
+                     className="w-full bg-[#f8fafc] border border-primary/10 rounded-xl px-4 py-2.5 text-[13px] font-bold text-primary focus:bg-white focus:border-gold outline-none transition-all placeholder:text-slate-400"
+                     placeholder="SEO description"
+                   />
+                </div>
+              </div>
+            </div>
+
+            {/* SEO Optimization */}
+            <div className="bg-white rounded-[20px] p-6 shadow-[0_4px_40px_rgba(19,47,70,0.03)] border border-primary/10">
+              <h3 className="text-[12px] font-black uppercase tracking-widest text-slate-700 mb-4 border-b border-primary/10 pb-3 flex items-center gap-2">
+                <HiOutlineSave size={18} />
+                SEO Metadata
+              </h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Meta Title</label>
                   <input
                     type="text"
-                    value={val}
-                    onChange={(e) => set(e.target.value)}
-                    className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-gold/40 transition-all"
-                    placeholder="e.g. Express Entry"
+                    value={metaTitle}
+                    onChange={(e) => setMetaTitle(e.target.value)}
+                    className="w-full bg-[#f8fafc] border border-primary/10 rounded-xl px-4 py-2.5 text-[13px] font-bold text-primary focus:bg-white focus:border-gold outline-none transition-all placeholder:text-slate-400"
+                    placeholder="Search Engine Title"
                   />
+                  <div className="h-1 bg-gold/10 rounded-full mt-2 overflow-hidden">
+                     <div className="h-full bg-gold transition-all" style={{ width: `${Math.min((metaTitle.length / 60) * 100, 100)}%` }} />
+                  </div>
                 </div>
-              ))}
-            </div>
 
-            <div className="grid grid-cols-2 max-[700px]:grid-cols-1 gap-4">
-              <div>
-                <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                  Custom URL Slug
-                </label>
-                <input
-                  type="text"
-                  value={customUrl}
-                  onChange={(e) =>
-                    setCustomUrl(
-                      e.target.value
-                        .toLowerCase()
-                        .replace(/[^a-z0-9-]/g, "-")
-                        .replace(/-+/g, "-")
-                    )
-                  }
-                  className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary font-mono focus:outline-none focus:ring-2 focus:ring-gold/40 transition-all"
-                  placeholder="e.g. express-entry-draw-278"
-                />
-                <p className="text-[11px] text-primary/40 mt-1">
-                  Leave blank to auto-generate from heading
-                </p>
-              </div>
-              <div>
-                <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                  Image Alt Text
-                </label>
-                <input
-                  type="text"
-                  value={altTag}
-                  onChange={(e) => setAltTag(e.target.value)}
-                  className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-gold/40 transition-all"
-                  placeholder="Describe the featured image"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* SEO */}
-          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(19,47,70,0.08)] space-y-5">
-            <h3 className="text-[16px] font-bold text-primary border-b border-primary/10 pb-3">
-              SEO
-            </h3>
-            <div>
-              <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                Meta Title
-              </label>
-              <input
-                type="text"
-                value={metaTitle}
-                onChange={(e) => setMetaTitle(e.target.value)}
-                className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-gold/40 transition-all"
-                placeholder="Defaults to blog heading if left blank"
-              />
-              <p className="text-[11px] text-primary/40 mt-1">
-                {metaTitle.length} / 60 characters recommended
-              </p>
-            </div>
-            <div>
-              <label className="block text-[13px] font-semibold text-primary mb-1.5">
-                Meta Description
-              </label>
-              <textarea
-                value={metaDesc}
-                onChange={(e) => setMetaDesc(e.target.value)}
-                rows={3}
-                className="w-full border border-primary/20 rounded-lg px-4 py-2.5 text-[14px] text-primary focus:outline-none focus:ring-2 focus:ring-gold/40 transition-all resize-none"
-                placeholder="Brief description for search engines (150–160 characters)"
-              />
-              <p className="text-[11px] text-primary/40 mt-1">
-                {metaDesc.length} / 160 characters recommended
-              </p>
-            </div>
-          </div>
-
-          {/* Featured image */}
-          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(19,47,70,0.08)]">
-            <h3 className="text-[16px] font-bold text-primary border-b border-primary/10 pb-3 mb-5">
-              Featured Image
-            </h3>
-            <div className="flex items-start gap-6 flex-wrap">
-              <div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-primary/5 hover:bg-primary/10 border border-dashed border-primary/30 text-primary px-6 py-3 rounded-lg text-[14px] font-medium transition-colors duration-200 cursor-pointer"
-                >
-                  Choose Image
-                </button>
-                {imageFile && (
-                  <p className="text-[12px] text-primary/50 mt-2">
-                    {imageFile.name}
-                  </p>
-                )}
-              </div>
-              {imagePreview && (
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-[200px] h-[120px] object-cover rounded-lg border border-primary/10"
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-1.5">Meta Description</label>
+                  <textarea
+                    value={metaDesc}
+                    onChange={(e) => setMetaDesc(e.target.value)}
+                    rows={3}
+                    className="w-full bg-[#f8fafc] border border-primary/10 rounded-xl px-4 py-2.5 text-[13px] font-bold text-primary focus:bg-white focus:border-gold outline-none transition-all resize-none placeholder:text-slate-400"
+                    placeholder="Search result snippet..."
                   />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setImageFile(null);
-                      setImagePreview("");
-                      if (fileInputRef.current) fileInputRef.current.value = "";
-                    }}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-[12px] flex items-center justify-center hover:bg-red-600 transition-colors duration-150 cursor-pointer"
-                  >
-                    ×
-                  </button>
+                  <div className="h-1 bg-gold/10 rounded-full mt-2 overflow-hidden">
+                     <div className="h-full bg-gold transition-all" style={{ width: `${Math.min((metaDesc.length / 160) * 100, 100)}%` }} />
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
-
-          {/* Content editor */}
-          <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(19,47,70,0.08)]">
-            <h3 className="text-[16px] font-bold text-primary border-b border-primary/10 pb-3 mb-5">
-              Content <span className="text-red-400">*</span>
-            </h3>
-            <ContentEditor
-              value={content}
-              onChange={setContent}
-              label=""
-            />
-          </div>
-
-          {/* Submit */}
-          <div className="flex items-center gap-4 pb-4">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="bg-primary text-white px-8 py-3 rounded-lg text-[15px] font-semibold hover:bg-primary/90 disabled:opacity-60 transition-colors duration-200 cursor-pointer"
-            >
-              {submitting ? "Publishing…" : "Publish Blog"}
-            </button>
-            <Link
-              href="/admin/blogs"
-              className="text-[14px] text-primary/50 hover:text-primary no-underline transition-colors duration-200"
-            >
-              Cancel
-            </Link>
           </div>
         </form>
       </main>

@@ -4,10 +4,21 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
+import Pagination from "@/components/admin/Pagination";
+import { motion } from "framer-motion";
+import { 
+  HiOutlinePencil, 
+  HiOutlineTrash, 
+  HiOutlineExternalLink, 
+  HiOutlinePlus,
+  HiOutlineCalendar,
+  HiOutlineGlobe,
+  HiOutlineNewspaper
+} from "react-icons/hi";
 
 const API = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
-interface NewsItem {
+interface News {
   _id: string;
   news_heading: string;
   tag_1: string;
@@ -19,41 +30,45 @@ interface NewsItem {
 
 export default function AdminNewsPage() {
   const router = useRouter();
-  const [news, setNews] = useState<NewsItem[]>([]);
+  const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   const getToken = () => localStorage.getItem("bl_admin_token");
 
   useEffect(() => {
     const token = getToken();
-    if (!token) { router.replace("/admin"); return; }
+    if (!token) {
+      router.replace("/admin");
+      return;
+    }
 
+    setLoading(true);
     fetch(`${API}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => {
         if (!r.ok) throw new Error("Unauthorized");
-        return fetch(`${API}/api/news`);
+        return fetch(`${API}/api/news?page=${page}&limit=10`);
       })
       .then((r) => r.json())
       .then((data) => {
-        setNews(Array.isArray(data) ? data : []);
+        setNews(data.news || []);
+        setTotalPages(data.pages || 1);
+        setTotalCount(data.total || 0);
         setLoading(false);
       })
       .catch(() => {
         router.replace("/admin");
       });
-  }, [router]);
+  }, [router, page]);
 
   const handleDelete = async (id: string, heading: string) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete "${heading}"? This cannot be undone.`
-      )
-    )
-      return;
+    if (!window.confirm(`Force purge news article: "${heading}"?`)) return;
 
     const token = getToken();
     if (!token) return;
@@ -66,169 +81,148 @@ export default function AdminNewsPage() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Delete failed");
-      }
-      setNews((prev) => prev.filter((n) => n._id !== id));
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Delete failed");
+      if (!res.ok) throw new Error("Purge operation failed");
+      setNews((prev) => prev.filter((b) => b._id !== id));
+      setTotalCount((prev) => prev - 1);
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setDeleting(null);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f0f4f8]">
-        <p className="text-primary/50 text-[16px]">Loading…</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-[#f0f4f8]">
-      <AdminHeader title="Manage News" subtitle="Create, edit and delete news articles" />
+    <div className="flex flex-col min-h-screen bg-[#f8fafc]">
+      <AdminHeader 
+        title="Intelligence Desk" 
+        subtitle={`RECORDS: ${totalCount} Immigration Bulletins Active`} 
+      />
 
-      <main className="max-w-[1200px] mx-auto px-6 py-10">
-        {/* Top bar */}
-        <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-          <h2 className="text-[24px] font-bold text-primary">
-            All News{" "}
-            <span className="text-[16px] font-normal text-primary/40">
-              ({news.length})
-            </span>
+      <main className="p-8 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4">
+        {/* Newsroom Action Console */}
+        <div className="flex items-center justify-between mb-8 bg-white rounded-2xl p-6 shadow-[0_4px_30px_rgba(0,0,0,0.02)] border border-primary/5">
+          <h2 className="text-[22px] font-black text-primary flex items-center gap-4 tracking-tighter leading-none">
+            <div className="w-1.5 h-8 bg-gold rounded-full" />
+            Policy Newsroom
           </h2>
           <Link
             href="/admin/news/new"
-            className="bg-gold text-white px-5 py-2.5 rounded-lg text-[14px] font-semibold no-underline hover:bg-gold/90 transition-colors duration-200"
+            className="group bg-primary text-white pl-8 pr-10 py-4 rounded-xl text-[13px] font-black no-underline hover:shadow-2xl hover:translate-y-[-2px] transition-all duration-300 flex items-center gap-3 uppercase tracking-widest"
           >
-            + New Article
+            <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-gold group-hover:text-primary transition-colors">
+               <HiOutlinePlus size={18} />
+            </div>
+            Dispatch News
           </Link>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-[14px] text-red-600 mb-4">
-            {error}
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-red-500/10 border border-red-500/20 rounded-[28px] px-8 py-5 text-[14px] text-red-500 mb-8 font-black uppercase tracking-widest flex items-center gap-3"
+          >
+            <span className="text-[20px]">⚠️</span> Database Collision: {error}
+          </motion.div>
         )}
 
-        {news.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center shadow-[0_4px_20px_rgba(19,47,70,0.08)]">
-            <p className="text-primary/40 text-[16px] mb-4">
-              No news articles yet. Create your first one!
-            </p>
-            <Link
-              href="/admin/news/new"
-              className="bg-primary text-white px-6 py-3 rounded-lg text-[14px] font-semibold no-underline hover:bg-primary/90 transition-colors duration-200 inline-block"
-            >
-              Create Article
+        {loading ? (
+          <div className="bg-white rounded-[40px] p-32 text-center shadow-[0_8px_50px_rgba(0,0,0,0.03)] border border-primary/5">
+            <div className="w-16 h-16 border-[6px] border-primary/5 border-t-gold rounded-full animate-spin mx-auto mb-8" />
+            <p className="text-primary/20 font-black uppercase tracking-[0.3em]">Querying Bulletin Board...</p>
+          </div>
+        ) : news.length === 0 ? (
+          <div className="bg-white rounded-[40px] p-32 text-center shadow-[0_8px_50px_rgba(0,0,0,0.03)] border border-primary/5">
+            <div className="w-20 h-20 bg-primary/5 rounded-[30px] flex items-center justify-center mx-auto mb-8 text-primary/10">
+               <HiOutlineNewspaper size={48} />
+            </div>
+            <p className="text-primary/30 text-[20px] font-black tracking-tight mb-8">No broadcasts detected in the matrix.</p>
+            <Link href="/admin/news/new" className="bg-primary text-white px-10 py-5 rounded-2xl font-black no-underline uppercase tracking-widest hover:shadow-xl transition-all">
+              Initialize First Broadcast
             </Link>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(19,47,70,0.08)] overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(19,47,70,0.03)] border border-primary/5 overflow-hidden"
+          >
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-primary/10 bg-[#f8fafc]">
-                    <th className="px-5 py-3.5 text-[12px] font-semibold text-primary/60 uppercase tracking-wider">
-                      Title
-                    </th>
-                    <th className="px-5 py-3.5 text-[12px] font-semibold text-primary/60 uppercase tracking-wider max-[700px]:hidden">
-                      Tags
-                    </th>
-                    <th className="px-5 py-3.5 text-[12px] font-semibold text-primary/60 uppercase tracking-wider max-[900px]:hidden">
-                      Date
-                    </th>
-                    <th className="px-5 py-3.5 text-[12px] font-semibold text-primary/60 uppercase tracking-wider text-right">
-                      Actions
-                    </th>
+                  <tr className="bg-primary/[0.03] border-b border-primary/10">
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Bulletin Header</th>
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] max-[700px]:hidden">Tags</th>
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] max-[900px]:hidden">Broadcast Date</th>
+                    <th className="px-8 py-5 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Ops</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {news.map((item, i) => {
-                    const tags = [item.tag_1, item.tag_2, item.tag_3].filter(
-                      Boolean
-                    );
-                    const dateStr = item.date
-                      ? new Date(item.date).toLocaleDateString("en-CA", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : "—";
-
-                    return (
-                      <tr
-                        key={item._id}
-                        className={`border-b border-primary/5 hover:bg-primary/[0.02] transition-colors duration-150 ${
-                          i % 2 === 0 ? "" : "bg-[#f8fafc]/50"
-                        }`}
-                      >
-                        <td className="px-5 py-4">
-                          <p className="text-[14px] font-semibold text-primary leading-snug line-clamp-2 max-w-[380px]">
-                            {item.news_heading}
-                          </p>
-                          {item.custom_url && (
-                            <p className="text-[11px] text-primary/40 mt-0.5">
-                              /{item.custom_url}
-                            </p>
-                          )}
-                        </td>
-                        <td className="px-5 py-4 max-[700px]:hidden">
-                          <div className="flex flex-wrap gap-1.5">
-                            {tags.length > 0 ? (
-                              tags.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="text-[11px] bg-gold/10 text-gold px-2 py-0.5 rounded-full font-medium"
-                                >
-                                  {tag}
-                                </span>
-                              ))
-                            ) : (
-                              <span className="text-[12px] text-primary/30">
-                                No tags
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-5 py-4 text-[13px] text-primary/50 whitespace-nowrap max-[900px]:hidden">
-                          {dateStr}
-                        </td>
-                        <td className="px-5 py-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <Link
-                              href={`/news/${item.custom_url || item._id}`}
-                              target="_blank"
-                              className="text-[12px] text-primary/50 hover:text-primary no-underline transition-colors duration-150 px-2 py-1 rounded hover:bg-primary/5"
-                            >
-                              View
+                <tbody className="divide-y divide-primary/5">
+                  {news.map((item, i) => (
+                    <motion.tr 
+                      key={item._id} 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="hover:bg-primary/[0.01] transition-colors group"
+                    >
+                      <td className="px-8 py-6">
+                        <p className="text-[16px] font-black text-primary group-hover:text-primary-light transition-colors leading-tight mb-1.5 tracking-tight">
+                          {item.news_heading}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1 opacity-80">
+                           <HiOutlineGlobe className="text-gold" size={14} />
+                           <p className="text-[11px] text-slate-600 font-bold font-mono lowercase tracking-tighter">/news/{item.custom_url || item._id}</p>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 max-[700px]:hidden">
+                        <div className="flex flex-wrap gap-2">
+                          {[item.tag_1, item.tag_2, item.tag_3].filter(Boolean).map((t) => (
+                            <span key={t} className="text-[9px] uppercase tracking-widest bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md font-black border border-slate-200">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 max-[900px]:hidden whitespace-nowrap">
+                        <div className="flex items-center gap-2.5 opacity-80">
+                           <HiOutlineCalendar className="text-slate-500" size={17} />
+                           <p className="text-[13px] text-slate-600 font-black uppercase tracking-widest italic">
+                              {item.date ? new Date(item.date).toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" }) : "STANDBY"}
+                           </p>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                         <div className="flex items-center justify-end gap-2.5 opacity-80 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0 relative">
+                            <Link href={`/news/${item.custom_url || item._id}`} target="_blank" className="w-10 h-10 bg-slate-50 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-white rounded-lg transition-all hover:shadow-lg border border-slate-200 no-underline shadow-sm">
+                              <HiOutlineExternalLink size={18} />
                             </Link>
-                            <Link
-                              href={`/admin/news/${item._id}/edit`}
-                              className="text-[13px] font-medium text-primary bg-primary/5 hover:bg-primary hover:text-white px-3 py-1.5 rounded-lg no-underline transition-colors duration-200"
-                            >
-                              Edit
+                            <Link href={`/admin/news/${item._id}/edit`} className="w-10 h-10 bg-slate-50 flex items-center justify-center text-slate-400 hover:text-gold hover:bg-white rounded-lg transition-all hover:shadow-lg border border-slate-200 no-underline shadow-sm">
+                              <HiOutlinePencil size={18} />
                             </Link>
                             <button
-                              onClick={() =>
-                                handleDelete(item._id, item.news_heading)
-                              }
+                              onClick={() => handleDelete(item._id, item.news_heading)}
                               disabled={deleting === item._id}
-                              className="text-[13px] font-medium text-red-500 bg-red-50 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg transition-colors duration-200 disabled:opacity-50 cursor-pointer"
+                              className="w-10 h-10 bg-slate-50 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all hover:shadow-lg border border-slate-200 disabled:opacity-50 shadow-sm"
                             >
-                              {deleting === item._id ? "…" : "Delete"}
+                              <HiOutlineTrash size={18} />
                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                         </div>
+                      </td>
+                    </motion.tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-          </div>
+            <div className="px-8 py-5 bg-primary/[0.01] border-t border-primary/5">
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                totalItems={totalCount}
+                onPageChange={(p) => setPage(p)}
+              />
+            </div>
+          </motion.div>
         )}
       </main>
     </div>

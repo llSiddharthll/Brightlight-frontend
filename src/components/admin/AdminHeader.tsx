@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { HiOutlineUserCircle, HiOutlineLogout } from "react-icons/hi";
+import { motion } from "framer-motion";
 
 interface AdminHeaderProps {
   title?: string;
@@ -9,7 +10,7 @@ interface AdminHeaderProps {
 }
 
 export default function AdminHeader({
-  title = "Brightlight Admin",
+  title,
   subtitle,
 }: AdminHeaderProps) {
   const router = useRouter();
@@ -26,29 +27,35 @@ export default function AdminHeader({
       : "Admin";
 
   return (
-    <header className="bg-primary text-white px-8 py-4 flex items-center justify-between shadow-lg">
-      <div>
-        <h1 className="text-[20px] font-bold">{title}</h1>
-        <p className="text-[13px] text-white/60">{subtitle || `Welcome, ${username}`}</p>
-      </div>
-      <div className="flex items-center gap-4">
-        <Link
-          href="/admin/dashboard"
-          className="text-[13px] text-white/70 hover:text-white no-underline transition-colors duration-200"
-        >
-          Dashboard
-        </Link>
-        <Link
-          href="/"
-          className="text-[13px] text-white/70 hover:text-white no-underline transition-colors duration-200"
-        >
-          View Site
-        </Link>
+    <header className="h-[100px] bg-white/70 backdrop-blur-xl sticky top-0 z-40 px-12 flex items-center justify-between border-b border-primary/10">
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
+        {title && <h1 className="text-[26px] font-black text-primary tracking-tight leading-none">{title}</h1>}
+        {subtitle && <p className="text-[13px] text-slate-500 font-bold mt-2 uppercase tracking-widest">{subtitle}</p>}
+      </motion.div>
+
+      <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 pr-8 border-r border-slate-200">
+          <div className="w-12 h-12 bg-slate-100 rounded-[18px] flex items-center justify-center text-slate-400 transform hover:scale-110 transition-transform shadow-sm">
+            <HiOutlineUserCircle size={28} />
+          </div>
+          <div>
+            <p className="text-[14px] font-black text-primary leading-none uppercase tracking-tight">{username}</p>
+            <div className="flex items-center gap-1.5 mt-1.5">
+               <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+               <p className="text-[11px] text-green-600 font-black uppercase tracking-widest">Active session</p>
+            </div>
+          </div>
+        </div>
+        
         <button
           onClick={handleLogout}
-          className="text-[13px] bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer"
+          className="flex items-center gap-3 text-[14px] font-black text-red-500 hover:text-white bg-red-500/5 hover:bg-red-500 py-3.5 px-6 rounded-[18px] transition-all duration-300 group"
         >
-          Sign Out
+          <HiOutlineLogout size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="uppercase tracking-widest">Terminate</span>
         </button>
       </div>
     </header>
